@@ -10,6 +10,7 @@ import taskReducer from "./state/taskSlice";
 import jupyterReducer from "./state/jupyterSlice";
 import securityAnalyzerReducer from "./state/securityAnalyzerSlice";
 import statusReducer from "./state/statusSlice";
+import dialogModeReducer from "./state/dialogModeSlice";  // 引入 dialogModeReducer
 
 export const rootReducer = combineReducers({
   fileState: fileStateReducer,
@@ -23,6 +24,7 @@ export const rootReducer = combineReducers({
   jupyter: jupyterReducer,
   securityAnalyzer: securityAnalyzerReducer,
   status: statusReducer,
+  dialogMode: dialogModeReducer, 
 });
 
 const store = configureStore({

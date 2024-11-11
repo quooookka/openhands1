@@ -42,7 +42,8 @@
     "vite": "^5.4.8",
     "web-vitals": "^3.5.2",
     "ws": "^8.18.0",
-    "@google/generative-ai": "*"
+    "@google/generative-ai": "*",
+    "@szhsin/react-menu": "^4.2.2"
   },
   "scripts": {
     "dev": "npm run make-i18n && remix vite:dev",

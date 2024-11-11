@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RiArrowRightDoubleLine } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
@@ -18,6 +18,10 @@ import { useSocket } from "#/context/socket";
 import ThumbsUpIcon from "#/assets/thumbs-up.svg?react";
 import ThumbsDownIcon from "#/assets/thumbs-down.svg?react";
 import { cn } from "#/utils/utils";
+import { toast } from 'react-hot-toast';
+
+// 引入 DialogModeForm 组件
+import { DialogModeForm } from "#/components/DialogModeForm";
 
 interface ScrollButtonProps {
   onClick: () => void;
@@ -52,23 +56,59 @@ function ChatInterface() {
   const { messages } = useSelector((state: RootState) => state.chat);
   const { curAgentState } = useSelector((state: RootState) => state.agent);
 
-  const [feedbackPolarity, setFeedbackPolarity] = React.useState<
-    "positive" | "negative"
-  >("positive");
+  const [feedbackPolarity, setFeedbackPolarity] = React.useState<"positive" | "negative">("positive");
   const [feedbackShared, setFeedbackShared] = React.useState(0);
 
+  const { isEnabled, workspaceName, mode, api } = useSelector(
+    (state: RootState) => state.dialogMode // 获取 dialogMode 的状态
+  );
+  
   const {
     isOpen: feedbackModalIsOpen,
     onOpen: onFeedbackModalOpen,
     onOpenChange: onFeedbackModalOpenChange,
   } = useDisclosure();
 
+  // 发送消息的处理函数
   const handleSendMessage = (content: string, imageUrls: string[]) => {
     const timestamp = new Date().toISOString();
-    dispatch(addUserMessage({ content, imageUrls, timestamp }));
-    send(createChatMessage(content, imageUrls, timestamp));
+    
+    // 如果启用了 DialogMode，则发送请求到 anythingLLM API
+    if (isEnabled) {
+      toast.success(`AnythingLLM Mode:\nWorkspace Name: ${workspaceName}\nMode: ${mode}\nAPI: ${api}`);
+    
+      fetch(`http://localhost:3001/api/v1/workspace/${workspaceName.toLowerCase()}/chat`, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Authorization": `Bearer ${api}`,  // 使用反引号来插入 api 变量
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: content,  // 用户输入的消息
+          mode,  // chat 或 query
+          sessionId: "identifier-to-partition-chats-by-external-id", // 可以保持不变
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        toast.success(`Response received:\n${data.textResponse}`); // 使用 textResponse 字段
+        dispatch(addUserMessage({ content, imageUrls, timestamp }));
+        dispatch(addAssistantMessage(data.textResponse));  // 根据返回的结构更新消息
+      })      
+      .catch(error => {
+        console.error("Error:", error);
+        toast.error("Error occurred, please try again later.");
+        dispatch(addAssistantMessage("Error occurred, please try again later."));
+      });
+    } else {
+      // 否则发送给大模型 agent
+      dispatch(addUserMessage({ content, imageUrls, timestamp }));
+      send(createChatMessage(content, imageUrls, timestamp));
+    }    
   };
 
+  // 分享反馈
   const shareFeedback = async (polarity: "positive" | "negative") => {
     onFeedbackModalOpen();
     setFeedbackPolarity(polarity);
@@ -81,8 +121,7 @@ function ChatInterface() {
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { scrollDomToBottom, onChatBodyScroll, hitBottom } =
-    useScrollToBottom(scrollRef);
+  const { scrollDomToBottom, onChatBodyScroll, hitBottom } = useScrollToBottom(scrollRef);
 
   React.useEffect(() => {
     if (curAgentState === AgentState.INIT && messages.length === 0) {
@@ -92,6 +131,7 @@ function ChatInterface() {
 
   return (
     <div className="flex flex-col h-full justify-between">
+      {/* 显示聊天内容 */}
       <div
         ref={scrollRef}
         onScroll={(e) => onChatBodyScroll(e.currentTarget)}
@@ -104,10 +144,7 @@ function ChatInterface() {
         <div className="relative">
           {feedbackShared !== messages.length && messages.length > 3 && (
             <div
-              className={cn(
-                "flex justify-start gap-[7px]",
-                "absolute left-3 bottom-[6.5px]",
-              )}
+              className={cn("flex justify-start gap-[7px]", "absolute left-3 bottom-[6.5px]")}
             >
               <button
                 type="button"
@@ -157,10 +194,7 @@ function ChatInterface() {
         </div>
 
         <ChatInput
-          disabled={
-            curAgentState === AgentState.LOADING ||
-            curAgentState === AgentState.AWAITING_USER_CONFIRMATION
-          }
+          disabled={curAgentState === AgentState.LOADING || curAgentState === AgentState.AWAITING_USER_CONFIRMATION}
           onSendMessage={handleSendMessage}
         />
       </div>

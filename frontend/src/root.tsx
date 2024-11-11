@@ -28,10 +28,12 @@ import AccountSettingsModal from "./components/modals/AccountSettingsModal";
 import NewProjectIcon from "./assets/new-project.svg?react";
 import DocsIcon from "./assets/docs.svg?react";
 import VSOpenIcon from './assets/vsopen.svg?react'; // 2024新增
+import DialogModeIcon from './assets/dialogmode.svg?react'; // 2024新增
 import i18n from "./i18n";
 import { useSocket } from "./context/socket";
 import { UserAvatar } from "./components/user-avatar";
 import { DangerModal } from "./components/modals/confirmation-modals/danger-modal";
+import { DialogModeForm } from "./components/DialogModeForm"; // 2024新增
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -95,6 +97,9 @@ export default function App() {
 
   const [vscodePath, setVscodePath] = useState("");
   const [isVscodeModalOpen, setIsVscodeModalOpen] = useState(false);
+
+  const [dialogModeModalIsOpen, setDialogModeModalIsOpen] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const handleVscodeButtonClick = () => {
     setIsVscodeModalOpen(true);
@@ -258,6 +263,14 @@ export default function App() {
           >
             <VSOpenIcon width={28} height={28} />
           </button>
+          <button
+            type="button"
+            className="w-8 h-8 rounded-full hover:opacity-80 flex items-center justify-center"
+            onClick={() => setDialogModeModalIsOpen(true)}  // 点击时打开对话模式设置
+            aria-label="Dialog Mode Settings"
+          >
+            <DialogModeIcon width={28} height={28} />  {/* 可以使用一个新的图标 */}
+          </button>
         </nav>
       </aside>
 
@@ -363,7 +376,12 @@ export default function App() {
           </div>
         </ModalBackdrop>
       )}
-
+      {/* 对话模式设置模态框 */}
+      {dialogModeModalIsOpen && (
+        <ModalBackdrop onClose={() => setDialogModeModalIsOpen(false)}>
+          <DialogModeForm onClose={() => setDialogModeModalIsOpen(false)} />
+        </ModalBackdrop>
+      )}
 
       </div>
 
