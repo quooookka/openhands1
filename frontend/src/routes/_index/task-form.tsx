@@ -188,11 +188,11 @@ export function TaskForm({ importedProjectZip }: TaskFormProps) {
       </Form>
       <label className="flex self-start items-center text-[#A3A3A3] text-xs leading-[18px] -tracking-[0.08px] cursor-pointer">
         <Clip width={16} height={16} />
-        Attach images
+        Attach your files
         <input
           hidden
           type="file"
-          accept="image/*"
+          // accept="*/*" //20241018 修改文件上传类型限制 无限制
           id="file-input"
           multiple
           onChange={(event) => {

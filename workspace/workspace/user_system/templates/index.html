@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+    <h1>欢迎！</h1>
+    <p>
+        {% if session.logged_in %}
+            您已登录，<a href="{{ url_for('logout') }}">点击此处退出</a>。
+        {% else %}
+            请<a href="{{ url_for('login') }}">登录</a>或<a href="{{ url_for('register') }}">注册</a>。
+        {% endif %}
+    </p>
+</body>
+</html>

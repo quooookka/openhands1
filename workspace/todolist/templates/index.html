@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+</head>
+<body>
+    <h1>My Todo List</h1>
+    <ul>
+        {% for todo in todos %}
+            <li>
+                <input type="checkbox" id="{{ todo.id }}" {% if todo.completed %} checked {% endif %}>
+                <label for="{{ todo.id }}">{{ todo.title }}</label>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/new">New Todo</a>
+</body>
+</html>

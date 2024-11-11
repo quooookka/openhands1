@@ -1,0 +1,1 @@
+{"id": 14, "timestamp": "2024-11-11T16:49:41.722576", "source": "user", "message": "Agent state changed to AgentState.INIT", "action": "change_agent_state", "args": {"agent_state": "init", "thought": ""}}

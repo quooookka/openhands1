@@ -1,0 +1,131 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(9, 30px);
+  grid-template-rows: repeat(9, 30px);
+  gap: 2px;
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.cell.revealed {
+  background-color: #fff;
+}
+
+.cell.mine {
+  background-color: red;
+}
+
+.cell.flag {
+  background-color: #008000;
+}
+
+.cell.hidden {
+  background-color: #eee;
+}
+
+.cell.number {
+  color: blue;
+}
+
+.cell.number-1 {
+  color: blue;
+}
+
+.cell.number-2 {
+  color: green;
+}
+
+.cell.number-3 {
+  color: red;
+}
+
+.cell.number-4 {
+  color: darkblue;
+}
+
+.cell.number-5 {
+  color: brown;
+}
+
+.cell.number-6 {
+  color: teal;
+}
+
+.cell.number-7 {
+  color: black;
+}
+
+.cell.number-8 {
+  color: gray;
+}
+
+.game-info {
+  margin-bottom: 10px;
+}
+
+.game-info span {
+  margin-right: 10px;
+}
+
+.game-info .timer {
+  color: red;
+}
+
+.game-info .mines {
+  color: blue;
+}
+
+.game-info .score {
+  color: green;
+}
+
+.game-over {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.game-over h2 {
+  color: red;
+}
+
+.game-over button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.game-over button:hover {
+  background-color: #45a049;
+}

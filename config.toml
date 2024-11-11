@@ -1,0 +1,9 @@
+[core]
+workspace_base="./workspace"
+file_store = "local"
+file_store_path = "/root/OpenHands/cache"
+
+[llm]
+model="gemini/gemini-1.5-flash"
+api_key="AIzaSyCmSx2EJUSmXJNNm8MTvPrRpD1NOsRp8bw"
+embedding_model=""

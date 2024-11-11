@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>扫雷游戏</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>扫雷游戏</h1>
+        <div class="game-info">
+            <span class="timer">0:00</span>
+            <span class="mines">Mines: {{ mines }}</span>
+            <span class="score">Score: {{ score }}</span>
+        </div>
+        <div class="game-board"></div>
+        <div class="game-over" style="display: none;">
+            <h2></h2>
+            <button class="restart">Play Again</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

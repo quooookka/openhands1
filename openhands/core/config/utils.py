@@ -381,12 +381,14 @@ def parse_arguments() -> argparse.Namespace:
     return parsed_args
 
 
+# 加载应用配置
 def load_app_config(
-    set_logging_levels: bool = True, config_file: str = 'config.toml'
+    set_logging_levels: bool = True,
+    config_file: str = 'config.toml',  # 配置文件路径
 ) -> AppConfig:
     """Load the configuration from the specified config file and environment variables.
 
-    Args:
+    Args: 参数解释
         set_logger_levels: Whether to set the global variables for logging levels.
         config_file: Path to the config file. Defaults to 'config.toml' in the current directory.
     """
@@ -395,6 +397,6 @@ def load_app_config(
     load_from_env(config, os.environ)
     finalize_config(config)
     if set_logging_levels:
-        logger.DEBUG = config.debug
-        logger.DISABLE_COLOR_PRINTING = config.disable_color
+        logger.DEBUG = config.debug  # False
+        logger.DISABLE_COLOR_PRINTING = config.disable_color  # False
     return config

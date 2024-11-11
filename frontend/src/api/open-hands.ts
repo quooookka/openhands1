@@ -7,6 +7,7 @@ import {
   GitHubAccessTokenResponse,
   ErrorResponse,
 } from "./open-hands.types";
+import { toast } from 'react-hot-toast';  // 2024新增
 
 /**
  * Generate the base URL of the OpenHands API
@@ -136,6 +137,40 @@ class OpenHands {
 
     return response.json();
   }
+
+  // 2024新增
+  static async openVscode(
+    token: string,
+    path: string,
+  ): Promise<{ message: string } | ErrorResponse> {
+    // 显示正在打开VS Code的通知
+    toast.success("Attempting to open VS Code at path: " + path);
+
+    try {
+      const response = await fetch(`${OpenHands.BASE_URL}/api/open-vscode`, {
+        method: "POST",
+        headers: {
+          ...OpenHands.generateHeaders(token), // 传递 headers
+          "Content-Type": "application/json", // 设置正确的 Content-Type
+        },
+        body: JSON.stringify({ path }), // 确保传递的是对象格式的 JSON
+      });
+
+      if (response.ok) {
+        toast.success("VS Code opened successfully."); // 显示成功通知
+        return { message: "VS Code opened successfully." };
+      } else {
+        const errorText = await response.text();
+        toast.error("Failed to open VS Code: " + errorText); // 显示失败通知
+        return { message: "Failed to open VS Code: " + errorText };
+      }
+    } catch (error) {
+      toast.error("Error in fetch: " + error); // 显示错误通知
+      return { message: "Error in fetch: " + error };
+    }
+  }
+
+
 
   /**
    * Get the blob of the workspace zip

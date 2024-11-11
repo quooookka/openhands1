@@ -183,7 +183,7 @@ export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 
 ```toml
 file_store="local"
-file_store_path="/absolute/path/to/openhands/cache/directory"
+file_store_path="\\wsl.localhost\Ubuntu\root\OpenHands\cache"
 ```
 
 * 在您的 .bashrc 中添加一个固定的 JWT 秘密，如下所示，以便以前的会话 ID 可以被接受。

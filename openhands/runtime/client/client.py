@@ -198,6 +198,11 @@ class RuntimeClient:
                 )
                 raise
 
+        # 避免使用 UID 0 2024-1010修改
+        if user_id == 0:
+            logger.warning('UID 0 is reserved for root. Assigning a different UID.')
+            user_id = 1001  # 这里可以选择一个未使用的 UID
+
         # Add sudoer
         sudoer_line = r"echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers"
         output = subprocess.run(sudoer_line, shell=True, capture_output=True)

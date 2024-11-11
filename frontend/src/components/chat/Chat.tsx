@@ -18,6 +18,7 @@ function Chat({ messages, curAgentState }: ChatProps) {
             curAgentState === AgentState.AWAITING_USER_CONFIRMATION
           }
         />
+
       ))}
     </div>
   );

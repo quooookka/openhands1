@@ -1,0 +1,1 @@
+{"id": 12, "timestamp": "2024-11-11T16:48:48.175129", "source": "user", "message": "Agent state changed to AgentState.LOADING", "action": "change_agent_state", "args": {"agent_state": "loading", "thought": ""}}

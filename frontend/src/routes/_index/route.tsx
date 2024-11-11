@@ -168,7 +168,7 @@ function Home() {
                     type="file"
                     accept="application/zip"
                     id="import-project"
-                    multiple={false}
+                    multiple
                     onChange={(event) => {
                       if (event.target.files) {
                         const zip = event.target.files[0];
@@ -177,6 +177,7 @@ function Home() {
                         // TODO: handle error
                       }
                     }}
+
                   />
                 </label>
               )

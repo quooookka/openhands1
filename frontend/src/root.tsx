@@ -13,7 +13,8 @@ import {
 } from "@remix-run/react";
 import "./tailwind.css";
 import "./index.css";
-import React from "react";
+// import React from "react"; 2024修改
+import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import CogTooth from "./assets/cog-tooth";
 import { SettingsForm } from "./components/form/settings-form";
@@ -26,6 +27,7 @@ import { getSettings, settingsAreUpToDate } from "./services/settings";
 import AccountSettingsModal from "./components/modals/AccountSettingsModal";
 import NewProjectIcon from "./assets/new-project.svg?react";
 import DocsIcon from "./assets/docs.svg?react";
+import VSOpenIcon from './assets/vsopen.svg?react'; // 2024新增
 import i18n from "./i18n";
 import { useSocket } from "./context/socket";
 import { UserAvatar } from "./components/user-avatar";
@@ -80,6 +82,7 @@ export const clientLoader = async () => {
   });
 };
 
+
 export default function App() {
   const { stop, isConnected } = useSocket();
   const navigation = useNavigation();
@@ -89,6 +92,40 @@ export default function App() {
   const loginFetcher = useFetcher({ key: "login" });
   const logoutFetcher = useFetcher({ key: "logout" });
   const endSessionFetcher = useFetcher({ key: "end-session" });
+
+  const [vscodePath, setVscodePath] = useState("");
+  const [isVscodeModalOpen, setIsVscodeModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const handleVscodeButtonClick = () => {
+    setIsVscodeModalOpen(true);
+  };
+
+  const handleVscodeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVscodePath(e.target.value);
+  };
+
+  const handleVscodeOpen = async () => {
+    if (!vscodePath) {
+      alert("Please enter a valid path.");
+      return;
+    }
+    setLoading(true);
+    const token = localStorage.getItem("token");
+    if(token) {
+      try {
+        await OpenHands.openVscode(token, vscodePath); // 调用后端API
+        setIsVscodeModalOpen(false); // 关闭模态框
+      } catch (error) {
+        console.error("Error opening VS Code", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleVscodeModalClose = () => {
+    setIsVscodeModalOpen(false);
+  };
 
   const [accountSettingsModalOpen, setAccountSettingsModalOpen] =
     React.useState(false);
@@ -162,8 +199,12 @@ export default function App() {
     });
   };
 
+  //<Toaster position="bottom-center" />
+
   return (
+
     <div className="bg-root-primary p-3 h-screen min-w-[1024px] overflow-x-hidden flex gap-3">
+
       <aside className="px-1 flex flex-col gap-[15px]">
         <button
           type="button"
@@ -209,8 +250,17 @@ export default function App() {
               <NewProjectIcon width={28} height={28} />
             </button>
           )}
+          <button
+            type="button"
+            className="w-8 h-8 rounded-full hover:opacity-80 flex items-center justify-center"
+            onClick={handleVscodeButtonClick}
+            aria-label="VSOpen"
+          >
+            <VSOpenIcon width={28} height={28} />
+          </button>
         </nav>
       </aside>
+
       <div className="h-full w-full relative">
         <Outlet />
         {navigation.state === "loading" && location.pathname !== "/" && (
@@ -276,7 +326,47 @@ export default function App() {
             />
           </ModalBackdrop>
         )}
+
+      {isVscodeModalOpen && (
+        <ModalBackdrop onClose={handleVscodeModalClose}>
+          <div className="bg-root-primary w-[384px] p-6 rounded-xl flex flex-col gap-2">
+            <span className="text-xl leading-6 font-semibold -tracking-[0.01em]">
+              Open VS Code
+            </span>
+            <p className="text-xs text-[#A3A3A3]">
+              Enter the path of the project you want to open in VS Code.
+            </p>
+            <input
+              type="text"
+              value={vscodePath}
+              onChange={handleVscodeInputChange}
+              className="p-2 border rounded-md"
+              placeholder="/path/to/your/project"
+            />
+            <div className="flex justify-between gap-2 mt-4">
+              <button
+                className="bg-gray-500 text-white p-2 rounded"
+                onClick={handleVscodeModalClose}
+              >
+                Cancel
+              </button>
+              <button
+                className={`bg-blue-500 text-white p-2 rounded ${
+                  loading ? "opacity-50" : ""
+                }`}
+                onClick={handleVscodeOpen}
+                disabled={loading}
+              >
+                {loading ? "Opening..." : "Open VS Code"}
+              </button>
+            </div>
+          </div>
+        </ModalBackdrop>
+      )}
+
+
       </div>
+
     </div>
   );
 }

@@ -17,6 +17,7 @@
     "types": [
       "@remix-run/node",
       "vite/client",
+      "@szhsin/react-menu"
     ],
     "allowJs": true,
     "skipLibCheck": true,

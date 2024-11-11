@@ -1,0 +1,6 @@
+[core]
+workspace_base="./workspace"
+
+[llm]
+model="gemini/gemini-1.5-flash"
+api_key="AIzaSyCmSx2EJUSmXJNNm8MTvPrRpD1NOsRp8bw"

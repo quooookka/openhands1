@@ -25,6 +25,7 @@ class CodeActResponseParser(ResponseParser):
         super().__init__()
         self.action_parsers = [
             CodeActActionParserFinish(),
+            # CodeActActionParserOpenVSCode(),
             CodeActActionParserCmdRun(),
             CodeActActionParserIPythonRunCell(),
             CodeActActionParserAgentDelegate(),
@@ -178,4 +179,55 @@ class CodeActActionParserMessage(ActionParser):
         return True
 
     def parse(self, action_str: str) -> Action:
+        print('Use！！！！！')
         return MessageAction(content=action_str, wait_for_response=True)
+
+
+# 添加新解析器示例
+# class NewActionParser(ActionParser):
+#    def check_condition(self, action_str: str) -> bool:
+#        return "new_pattern" in action_str
+
+#    def parse(self, action_str: str) -> Action:
+# return NewAction(...)
+
+# 只需要将新解析器添加到链中
+# self.action_parsers.append(NewActionParser())
+
+
+class CodeActActionParserOpenVSCode(ActionParser):
+    """Parser action:
+    - CmdRunAction(command) - bash command to run
+    - AgentFinishAction() - end the interaction
+    """
+
+    def __init__(self):
+        self.vscode_path = None
+
+    def check_condition(self, action_str: str) -> bool:
+        # 检查是否包含指定的模式
+        self.vscode_path = re.search(
+            r'<open_vscode>(.*?)</open_vscode>', action_str, re.DOTALL
+        )
+        return self.vscode_path is not None
+
+    def parse(self, action_str: str) -> Action:
+        assert (
+            self.vscode_path is not None
+        ), 'self.vscode_path should not be None when parse is called'
+        thought = action_str.replace(self.vscode_path.group(0), '').strip()
+
+        # 提取路径
+        path_group = self.vscode_path.group(1).strip()
+
+        # 构建启动 VS Code 的命令
+        command = f'code {path_group}'
+        print('Executing VS Code command:', command)
+
+        # 返回 CmdRunAction 以执行命令
+        return CmdRunAction(command=command, thought=thought)
+
+
+# 使用示例
+# 将新的解析器添加到解析器链中
+# self.action_parsers.append(CodeActActionParserOpenVSCode())

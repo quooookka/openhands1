@@ -2,6 +2,7 @@ import asyncio
 import io
 import os
 import re
+import subprocess  # 2024新增
 import tempfile
 import uuid
 import warnings
@@ -58,7 +59,9 @@ from openhands.runtime.runtime import Runtime
 from openhands.server.auth import get_sid_from_token, sign_token
 from openhands.server.session import SessionManager
 
+# 加载env文件
 load_dotenv()
+
 
 config = load_app_config()
 file_store = get_file_store(config.file_store, config.file_store_path)
@@ -273,12 +276,13 @@ async def websocket_endpoint(websocket: WebSocket):
     """
     await asyncio.wait_for(websocket.accept(), 10)
 
+    # Incalid token窗口显示
     if websocket.query_params.get('token'):
         token = websocket.query_params.get('token')
         sid = get_sid_from_token(token, config.jwt_secret)
 
         if sid == '':
-            await websocket.send_json({'error': 'Invalid token', 'error_code': 401})
+            await websocket.send_json({'error': 'Invalid token！！', 'error_code': 401})
             await websocket.close()
             return
     else:
@@ -506,6 +510,31 @@ def sanitize_filename(filename):
         name, ext = os.path.splitext(filename)
         filename = name[: max_length - len(ext)] + ext
     return filename
+
+
+class PathRequest(BaseModel):
+    path: str
+
+
+@app.post('/api/open-vscode')
+async def open_vscode(request: PathRequest):
+    path = request.path  # 获取路径
+
+    # 验证路径是否存在
+    if not os.path.exists(path):
+        raise HTTPException(status_code=400, detail=f"Path '{path}' does not exist.")
+
+    try:
+        # 使用 subprocess.Popen 调用 VS Code
+        subprocess.Popen(['code', path])
+        return {'message': 'VS Code opened successfully'}
+    except FileNotFoundError:
+        raise HTTPException(
+            status_code=400,
+            detail="VS Code executable not found. Make sure 'code' is in your PATH.",
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f'Failed to open VS Code: {str(e)}')
 
 
 @app.post('/api/upload-files')
