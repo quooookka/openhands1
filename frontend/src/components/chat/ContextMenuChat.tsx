@@ -11,7 +11,7 @@ interface ContextMenuChatProps {
 }
 
 const ContextMenuChat: React.FC<ContextMenuChatProps> = ({ onOptionSelect }) => {
-  const options = ['创建新项目', '代码语言转换', '代码片段生成', '函数重构优化', '测试用例生成'];
+  const options = ['创建新项目', '代码语言转换', '代码片段生成', '函数重构优化', '测试用例生成', '自定义'];
 
   return (
     <Menu

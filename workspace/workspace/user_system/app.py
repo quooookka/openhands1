@@ -15,6 +15,7 @@ def load_users():
         return {}
 
 
+# 合并排序
 # 保存用户信息
 def save_users(users):
     with open('users.json', 'w') as f:

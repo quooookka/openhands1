@@ -17,7 +17,6 @@
     "@vitejs/plugin-react": "^4.3.2",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.4.0",
-    "@google/generative-ai": "*",
     "clsx": "^2.1.1",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "i18next": "^23.15.2",
@@ -42,7 +41,8 @@
     "tailwind-merge": "^2.5.3",
     "vite": "^5.4.8",
     "web-vitals": "^3.5.2",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "@google/generative-ai": "*"
   },
   "scripts": {
     "dev": "npm run make-i18n && remix vite:dev",

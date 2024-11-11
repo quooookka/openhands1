@@ -4,13 +4,9 @@ from flask import Flask, redirect, render_template, request, url_for
 
 app = Flask(__name__)
 
-# 测试
-
-
 @app.route('/')
 def index():
     return render_template('index.html', todos=todos)
-
 
 @app.route('/new', methods=['GET', 'POST'])
 def new_todo():
@@ -47,7 +43,3 @@ todos = load_todos()
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# test
-
-# 测试
