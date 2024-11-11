@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDialogMode } from "../state/dialogModeSlice";  // 引入 setDialogMode
-import { RootState } from "../store"; 
+import { RootState } from "../store";
 import { toast } from 'react-hot-toast';
 
 export const DialogModeForm = ({ onClose }: { onClose: () => void }) => {

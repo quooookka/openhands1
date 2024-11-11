@@ -62,7 +62,7 @@ function ChatInterface() {
   const { isEnabled, workspaceName, mode, api } = useSelector(
     (state: RootState) => state.dialogMode // 获取 dialogMode 的状态
   );
-  
+
   const {
     isOpen: feedbackModalIsOpen,
     onOpen: onFeedbackModalOpen,
@@ -72,11 +72,11 @@ function ChatInterface() {
   // 发送消息的处理函数
   const handleSendMessage = (content: string, imageUrls: string[]) => {
     const timestamp = new Date().toISOString();
-    
+
     // 如果启用了 DialogMode，则发送请求到 anythingLLM API
     if (isEnabled) {
       toast.success(`AnythingLLM Mode:\nWorkspace Name: ${workspaceName}\nMode: ${mode}\nAPI: ${api}`);
-    
+
       fetch(`http://localhost:3001/api/v1/workspace/${workspaceName.toLowerCase()}/chat`, {
         method: "POST",
         headers: {
@@ -95,7 +95,7 @@ function ChatInterface() {
         toast.success(`Response received:\n${data.textResponse}`); // 使用 textResponse 字段
         dispatch(addUserMessage({ content, imageUrls, timestamp }));
         dispatch(addAssistantMessage(data.textResponse));  // 根据返回的结构更新消息
-      })      
+      })
       .catch(error => {
         console.error("Error:", error);
         toast.error("Error occurred, please try again later.");
@@ -105,7 +105,7 @@ function ChatInterface() {
       // 否则发送给大模型 agent
       dispatch(addUserMessage({ content, imageUrls, timestamp }));
       send(createChatMessage(content, imageUrls, timestamp));
-    }    
+    }
   };
 
   // 分享反馈

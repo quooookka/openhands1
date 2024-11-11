@@ -24,7 +24,7 @@ export const rootReducer = combineReducers({
   jupyter: jupyterReducer,
   securityAnalyzer: securityAnalyzerReducer,
   status: statusReducer,
-  dialogMode: dialogModeReducer, 
+  dialogMode: dialogModeReducer,
 });
 
 const store = configureStore({
