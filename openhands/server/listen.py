@@ -70,7 +70,7 @@ session_manager = SessionManager(config, file_store)
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3001', 'http://127.0.0.1:3001'],
+    allow_origins=['http://localhost:3002', 'http://127.0.0.1:3002'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
@@ -323,7 +323,7 @@ async def get_litellm_models() -> list[str]:
 
     To get the models:
     ```sh
-    curl http://localhost:3000/api/litellm-models
+    curl http://localhost:3100/api/litellm-models
     ```
 
     Returns:
@@ -373,7 +373,7 @@ async def get_agents():
 
     To get the agents:
     ```sh
-    curl http://localhost:3000/api/agents
+    curl http://localhost:3100/api/agents
     ```
 
     Returns:
@@ -389,7 +389,7 @@ async def get_security_analyzers():
 
     To get the security analyzers:
     ```sh
-    curl http://localhost:3000/api/security-analyzers
+    curl http://localhost:3100/api/security-analyzers
     ```
 
     Returns:
@@ -415,7 +415,7 @@ async def list_files(request: Request, path: str | None = None):
 
     To list files:
     ```sh
-    curl http://localhost:3000/api/list-files
+    curl http://localhost:3100/api/list-files
     ```
 
     Args:
@@ -467,7 +467,7 @@ async def select_file(file: str, request: Request):
 
     To select a file:
     ```sh
-    curl http://localhost:3000/api/select-file?file=<file_path>
+    curl http://localhost:3100/api/select-file?file=<file_path>
     ```
 
     Args:
@@ -543,7 +543,7 @@ async def upload_file(request: Request, files: list[UploadFile]):
 
     To upload a files:
     ```sh
-    curl -X POST -F "file=@<file_path1>" -F "file=@<file_path2>" http://localhost:3000/api/upload-files
+    curl -X POST -F "file=@<file_path1>" -F "file=@<file_path2>" http://localhost:3100/api/upload-files
     ```
 
     Args:
@@ -631,7 +631,7 @@ async def submit_feedback(request: Request, feedback: FeedbackDataModel):
 
     To submit feedback:
     ```sh
-    curl -X POST -F "email=test@example.com" -F "token=abc" -F "feedback=positive" -F "permissions=private" -F "trajectory={}" http://localhost:3000/api/submit-feedback
+    curl -X POST -F "email=test@example.com" -F "token=abc" -F "feedback=positive" -F "permissions=private" -F "trajectory={}" http://localhost:3100/api/submit-feedback
     ```
 
     Args:
@@ -662,7 +662,7 @@ def get_root_task(request: Request):
 
     To get the root_task:
     ```sh
-    curl -H "Authorization: Bearer <TOKEN>" http://localhost:3000/api/root_task
+    curl -H "Authorization: Bearer <TOKEN>" http://localhost:3100/api/root_task
     ```
 
     Args:
@@ -691,7 +691,7 @@ async def appconfig_defaults():
 
     To get the default configurations:
     ```sh
-    curl http://localhost:3000/api/defaults
+    curl http://localhost:3100/api/defaults
     ```
 
     Returns:

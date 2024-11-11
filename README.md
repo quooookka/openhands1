@@ -50,13 +50,13 @@ docker run -it --pull=always \
     -e WORKSPACE_MOUNT_PATH=$WORKSPACE_BASE \
     -v $WORKSPACE_BASE:/opt/workspace_base \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -p 3000:3000 \
+    -p 3100:3100 \
     --add-host host.docker.internal:host-gateway \
     --name openhands-app-$(date +%Y%m%d%H%M%S) \
     ghcr.io/all-hands-ai/openhands:0.9
 ```
 
-You'll find OpenHands running at [http://localhost:3000](http://localhost:3000)!
+You'll find OpenHands running at [http://localhost:3100](http://localhost:3100)!
 
 You'll need a model provider and API key. One option that works well: [Claude 3.5 Sonnet](https://www.anthropic.com/api), but you have [many options](https://docs.all-hands.dev/modules/usage/llms).
 

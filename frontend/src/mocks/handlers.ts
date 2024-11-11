@@ -16,7 +16,7 @@ export const handlers = [
       { id: 2, full_name: "octocat/earth" },
     ]);
   }),
-  http.get("http://localhost:3000/api/list-files", async ({ request }) => {
+  http.get("http://localhost:3100/api/list-files", async ({ request }) => {
     await delay();
 
     const token = request.headers
@@ -30,7 +30,7 @@ export const handlers = [
 
     return HttpResponse.json(["file1.ts", "dir1/file2.ts", "file3.ts"]);
   }),
-  http.get("http://localhost:3000/api/select-file", async ({ request }) => {
+  http.get("http://localhost:3100/api/select-file", async ({ request }) => {
     await delay(500);
 
     const token = request.headers
@@ -51,11 +51,11 @@ export const handlers = [
 
     return HttpResponse.json(null, { status: 404 });
   }),
-  http.get("http://localhost:3000/api/options/agents", async () => {
+  http.get("http://localhost:3100/api/options/agents", async () => {
     await delay();
     return HttpResponse.json(["CodeActAgent", "CoActAgent"]);
   }),
-  http.get("http://localhost:3000/api/options/models", async () => {
+  http.get("http://localhost:3100/api/options/models", async () => {
     await delay();
     return HttpResponse.json([
       "gpt-3.5-turbo",
@@ -63,13 +63,13 @@ export const handlers = [
       "anthropic/claude-3.5",
     ]);
   }),
-  http.post("http://localhost:3000/api/submit-feedback", async () =>
+  http.post("http://localhost:3100/api/submit-feedback", async () =>
     HttpResponse.json({ statusCode: 200 }, { status: 200 }),
   ),
-  http.post("http://localhost:3000/api/save-file", () =>
+  http.post("http://localhost:3100/api/save-file", () =>
     HttpResponse.json(null, { status: 200 }),
   ),
-  http.get("http://localhost:3000/api/options/security-analyzers", async () => {
+  http.get("http://localhost:3100/api/options/security-analyzers", async () => {
     await delay();
     return HttpResponse.json(["mock-invariant"]);
   }),

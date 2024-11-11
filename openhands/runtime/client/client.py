@@ -782,7 +782,7 @@ if __name__ == '__main__':
 
         To list files:
         ```sh
-        curl http://localhost:3000/api/list-files
+        curl http://localhost:3100/api/list-files
         ```
 
         Args:
