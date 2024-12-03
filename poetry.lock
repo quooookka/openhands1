@@ -1014,13 +1014,13 @@ numpy = "*"
 
 [[package]]
 name = "chromadb"
-version = "0.5.12"
+version = "0.5.21"
 description = "Chroma."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "chromadb-0.5.12-py3-none-any.whl", hash = "sha256:213b10018ac50bf1295920fef279f40ffbfd9c5f16eebc3c37f319af83b843cc"},
-    {file = "chromadb-0.5.12.tar.gz", hash = "sha256:18f10f95b631e7a13b3445184f77b161baf09f278f16c26dd9f065d012242d2f"},
+    {file = "chromadb-0.5.21-py3-none-any.whl", hash = "sha256:e0ce066ecfc1c92f3272f10763159c3fb83245531d0288a62ad91f5f0a176296"},
+    {file = "chromadb-0.5.21.tar.gz", hash = "sha256:5db69119c3e9c7b642bb819da2d38b85ba428c367a292edd7002b53b6cad553b"},
 ]
 
 [package.dependencies]
@@ -1047,10 +1047,10 @@ pypika = ">=0.48.9"
 PyYAML = ">=6.0.0"
 rich = ">=10.11.0"
 tenacity = ">=8.2.3"
-tokenizers = ">=0.13.2"
+tokenizers = ">=0.13.2,<=0.20.3"
 tqdm = ">=4.65.0"
 typer = ">=0.9.0"
-typing-extensions = ">=4.5.0"
+typing_extensions = ">=4.5.0"
 uvicorn = {version = ">=0.18.3", extras = ["standard"]}
 
 [[package]]
